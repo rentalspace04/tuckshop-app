@@ -1,0 +1,29 @@
+ 1 | p | Charlie Matthaei   | May 18, 1971       | (02) 4915 6772 | CharlieMatthaei@teleworm.us     | AhFiegoh5
+ 2 | s | Logan Matthaei     | June 1, 2010       | (02) 4074 9416 | LoganMatthaei@teleworm.us       | uC7dahph
+ 3 | s | Amelie Hailes      | May 30, 2007       | (03) 5370 9842 | AmelieHailes@jourrapide.com     | ahlo2Ieja
+ 4 | p | Alica O'Shane      | January 31, 1996   | (02) 4068 3272 | AlicaOShane@armyspy.com         | aenuC7ib4ch
+ 5 | s | Joshua O'Shane     | October 4, 2010    | (07) 5651 8334 | JoshuaOShane@armyspy.com        | Quo6ao6Ae
+ 6 | p | Mackenzie Juan     | January 16, 1995   | (07) 3068 8485 | MackenzieJuan@jourrapide.com    | bo1Riboh
+ 7 | p | Erin Duras         | August 31, 1990    | (08) 8308 6210 | ErinDuras@dayrep.com            | eeb0Eo6rah
+ 8 | s | Liam Matthaei      | January 6, 2011    | (03) 5312 4869 | LiamMatthaei@rhyta.com          | ooh1aiKee6
+ 9 | s | Alana Balsillie    | February 5, 2010   | (08) 8348 1110 | AlanaBalsillie@jourrapide.com   | Eod7Me4S
+10 | s | Hannah Juan        | August 3, 2005     | (07) 3102 0142 | HannahJuan@armyspy.com          | Tahj9EY0ia
+11 | s | Madeleine Juan     | September 20, 2003 | (08) 9096 9310 | MadeleineJuan@jourrapide.com    | Saiyizoo1z
+12 | s | Paige Juan         | July 12, 2001      | (08) 9074 1289 | PaigeJuan@rhyta.com             | aeVuc4nei1e
+13 | s | Hunter Curnow      | March 30, 1999     | (02) 9600 4794 | HunterCurnow@jourrapide.com     | eShoh2dooph
+14 | s | Zane Juan          | July 24, 2005      | (02) 4033 2618 | ZaneJuan@teleworm.us            | OhB4ieToo9
+15 | s | Kiara Juan         | March 11, 2001     | (02) 6176 6438 | KiaraJuan@jourrapide.com        | Phaey3qu
+16 | s | Keira MacCullagh   | April 7, 2006      | (03) 5363 8078 | KeiraMacCullagh@teleworm.us     | Uoceexie8ai
+17 | s | Lilly Juan         | July 20, 2003      | (08) 8349 6523 | LillyJuan@teleworm.us           | moonga9Eus
+18 | s | Claudia Grasby     | May 13, 2001       | (03) 5358 8281 | ClaudiaGrasby@armyspy.com       | xoi8ieXie
+19 | s | Joseph Duras       | June 8, 2007       | (07) 4034 6879 | JosephDuras@dayrep.com          | neeb1Azee
+20 | s | John Duras         | January 20, 2007   | (08) 9053 5572 | JohnDuras@jourrapide.com        | Waing0Aezai
+
+parents: 1, 4, 6, 7,
+students: 2, 3, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+
+Parent Relationships
+1 -> 2, 8
+4 -> 5
+6 -> 10, 11, 12, 14, 15, 17
+7 -> 19, 20

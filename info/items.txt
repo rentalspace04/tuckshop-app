@@ -1,0 +1,52 @@
+Meat Pie
+Potato Pie
+Cheese and Beef Pie
+Sausage Roll
+Chicken Chips (Hot)
+Chicken Nuggets
+
+Egg Sandwich
+Egg and Lettuce Sandwich
+Nutella Sandwich
+Vegimite Sandwich
+Ham and Cheese Sandwich
+Ham and Salad Sandwich
+Salad Sandwich
+
+Salad Wrap
+Ham Wrap
+Chicken Wrap
+
+Chicken Roll
+Chicken and Gravy Roll
+Meatball Roll
+Meatball and Cheese Roll
+
+Nachos
+Macaroni Cheese
+Spaghetti
+
+Original Chips
+Salt and Vinegar Chips
+Chicken Chips
+
+Jelly Beans
+Smarties
+
+Chocolate Paddlepop
+Rainbow Paddlepop
+Ice-Cream tub
+Chocolate Drumstick
+Vanilla Drumstick
+
+Apple
+Orange
+Banana
+
+Water (250mL)
+Water (600mL)
+Orange Juice
+Apple Juice
+Chocolate Milk
+Strawberry Milk
+Banana Milk

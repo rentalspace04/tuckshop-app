@@ -1,0 +1,650 @@
+@import url(
+    'https://fonts.googleapis.com/css?family=Lobster|Playfair+Display:400,400i,700,900|Raleway:300,400,700');
+/* Reset styles */
+html, body, table, tbody, tr, td, div, span, a, h1, h2, h3, h4, p {
+    padding:0;
+    margin:0;
+    border: none;
+}
+
+a {
+    cursor: pointer;
+}
+
+body {
+    background: url("/img/textures/food.png") repeat;
+    background-color: #e9231e;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    font-family: "Raleway", sans-serif;
+    color: #000;
+}
+
+::selection {
+    background-color: yellow;
+}
+
+.relative-wrapper {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#main-content-box {
+    position: absolute;
+    background-color: #ffffff;
+    top: 0;
+    left: 0;
+    margin: 0% 13% 5% 13%;
+    min-height: 100%;
+    width: 74%;
+}
+
+#main-menu-box {
+    background-color: #e9231e;/*#ff0000;/*#ffb3b3;*/
+    top: 0;
+    left: 0;
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+    border-bottom: 12px solid yellow;
+    display: -webkit-flex;
+    -webkit-justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+}
+
+#main-menu-logo {
+    font-size: 78pt;
+    font-family: "Lobster", sans-serif;
+    color: #fff;
+    text-shadow:
+        -1px -1px 0 #1a1a00,
+        1px -1px 0 #1a1a00,
+        -1px 1px 0 #1a1a00,
+        1px 1px 0 #1a1a00;
+    font-weight: 200;
+    padding-left: 32px;
+    display: inline-block;
+}
+
+#main-menu-options {
+    min-height: 80px;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#main-menu-options a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14pt;
+    font-family: /*"Playfair Display",*/ "Raleway", sans-serif;
+    font-variant: small-caps;
+
+    padding: 20px 0px;
+    min-width: 120px;
+    text-shadow:
+        -1px -1px 0 #1a1a00,
+        1px -1px 0 #1a1a00,
+        -1px 1px 0 #1a1a00,
+        1px 1px 0 #1a1a00;
+    border-right: 1px solid black;
+}
+
+#main-menu-options a:last-child {
+    border: none;
+}
+
+#main-menu-options a:hover {
+    color: yellow;
+}
+
+#page-content-box {
+    padding: 20px 50px;
+}
+
+#page-content-box {
+    font-size: 16pt;
+}
+
+#page-content-box > p {
+    margin: 0 5%;
+    padding-bottom: 10px;
+}
+
+#page-content-box ul {
+    margin-left: 10%;
+    margin-bottom: 10px;
+}
+
+#page-content-box li {
+    padding-left: 10px;
+}
+
+.italics {
+    font-style: italic;
+}
+
+/* Front Page Specific Styles */
+#front-page-welcome {
+    position: static;
+    display: block;
+    text-align: center;
+    font-size: 14pt;
+    color: #000;
+    margin: 3% 25%;
+    width: 50%;
+    border-radius: 10px;
+    background-color: #e6f2ff;
+}
+
+#front-page-welcome a {
+    font-size: 20pt;
+    font-family: "Playfair Display", "Raleway", sans-serif;
+    text-decoration: none;
+    color: #000;
+}
+
+#front-page-welcome a:hover {
+    color: #f00;
+}
+
+#fpw-sign-in, #fpw-create-account {
+    padding: 20px 0px;
+    margin: 10px;
+}
+
+#fpw-sign-in {
+    border-bottom: 1px solid #333;
+    margin-bottom: 0;
+}
+
+#fpw-create-account {
+    margin-top: 0;
+}
+
+/* Dialog Page Styles */
+#dialog-body {
+    position: relative;
+    margin: 100px 25%;
+    width: 50%;
+    min-width: 300px;
+    min-height: 300px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+#dialog-body h1 {
+    border-bottom: 3px solid #e9231e;
+    font-size: 48pt;
+    text-align: center;
+    padding: 10px;
+}
+
+
+#login-form {
+    padding: 30px;
+    text-align: center;
+    position: static;
+}
+
+#login-form label {
+    font-size: 16pt;
+    padding-right: 10px;
+}
+
+#login-form table {
+    position: relative;
+    width: 100%;
+}
+
+#login-form tr {
+    height: 70px;
+}
+
+#login-form td:nth-child(1) {
+    text-align: right;
+    padding-right: 20px;
+    width: 30%;
+}
+
+#login-form td:nth-child(2) {
+    text-align: center;
+    padding: 10px;
+    width: 70%;
+}
+
+#login-form td:nth-child(2) .textbox {
+    width: 90%;
+}
+
+#login-form .textbox {
+    width: fill;
+}
+
+#login-form .button {
+    margin: 20px;
+}
+
+/* Form styles */
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #e9231e;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0px 5px #999;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.button:hover {
+    background-color: #ea312e;
+}
+
+.button:active {
+    background-color: #ea312e;
+    box-shadow: 0px 2px #666;
+    transform: translateY(3px);
+    -ms-transform: translateY(3px);
+    -webkit-transform: translateY(3px);
+}
+
+.textbox.error {
+    border-bottom: 4px solid red;
+}
+
+.textbox.error:focus, .textbox.error:active {
+    border-bottom: 2px solid red;
+}
+
+.textbox {
+    position: relative;
+    font-size: 16pt;
+    font-family: "Raleway", sans-serif;
+    padding: 5px;
+    border: none;
+    background-color: #f6f6fa;
+    border-bottom: 1px solid #444;
+    border-radius: 4px 4px 0px 0px;
+    transition: border 0.2s;
+}
+
+.textbox.updated {
+    border-bottom: 2px solid #009900;
+    background-color: #b3ffb3;
+}
+
+.textbox:active, .textbox:focus {
+    border-bottom: 2px solid #222;
+    box-shadow: none;
+    outline: none;
+}
+
+#formErrorMessage {
+    display: none;
+    width: 60%;
+    margin-left: 20%;
+    background-color: #f48d8b;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14pt;
+    font-style: italic;
+}
+
+/* Home Page styles */
+
+
+#homepage-content{
+    position: relative;
+}
+
+h1 {
+    font-family: "Raleway", sans-serif;
+    font-size: 32pt;
+    padding-bottom: 15px;
+}
+
+#homepage-sidebar {
+    width: 35%;
+    float: right;
+    background-color: #f8bab9;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+#homepage-sidebar p {
+    padding-bottom: 10px;
+}
+
+#homepage-sidebar a {
+    font-family: "Raleway", sans-serif;
+}
+
+#homepage-sidebar .child {
+    border-bottom: 1px solid #000;
+}
+
+#homepage-tasks {
+    width: 50%;
+    float: left;
+}
+
+.task-block {
+    margin: 0;
+    margin-bottom: 25px;
+    padding: 15px;
+    display: block;
+    background-color: #d21714;
+    text-decoration: none;
+    color: #fff;
+    box-shadow: 0px 7px #aaa;
+}
+
+.task-block:hover {
+    background-color: #e91916;
+    box-shadow: 0px 6px #999;
+    transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -webkit-transform: translateY(1px);
+}
+
+.task-block:active {
+    box-shadow: 0px 3px #888;
+    transform: translateY(4px);
+    -ms-transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+}
+
+.task-block p {
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.task-block h2 {
+    padding-bottom: 10px;
+}
+
+/* Menu Styles */
+#menu-categories {
+    float: left;
+    padding: 10px;
+    background-color: #f8bab9;
+    margin-right: 50px;
+    min-width: 20%;
+}
+
+.category-link {
+    padding-bottom: 5px;
+    padding-left: 20px;
+    display: block;
+
+}
+
+#menu-categories {
+    margin-bottom: 40px;
+}
+
+#menu-categories h2 {
+    padding-bottom: 7px;
+}
+
+.category-link.category-selected {
+    font-weight: 600;
+}
+
+#menu-list {
+    width: 70%;
+    float: right;
+    position: relative;
+}
+
+.menu-item {
+    margin: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000;
+    position: relative;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item-price {
+    text-align: center;
+    font-size: 24pt;
+    font-style: italic;
+    padding-bottom: 10px;
+}
+
+.menu-item-thumb{
+    float: left;
+    height: 60px;
+    margin: 10px;
+    margin-right: 20px;
+    border-radius: 2px;
+}
+.menu-item-title{
+    font-size: 24pt;
+    font-weight: 600;
+    text-decoration: none;
+    color: #000;
+}
+
+.menu-item-bottom-container {
+    position: relative;
+}
+.menu-item-desc{
+    width: 75%;
+}
+.menu-item-quantity{
+
+}
+.menu-item-quantity-text {
+    width: 30px;
+    height: 30px;
+    font-size: 16pt;
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+    vertical-align: middle
+}
+
+.menu-item-quantity {
+    min-width: 120px;
+    display: flex;
+    align-content: space-around;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.menu-subtract-button, .menu-add-button {
+    font-size: 16pt;
+    font-family: "Playfair Display", sans-serif;
+    height: 30px;
+    width: 30px;
+    border: 1px solid red;
+    color: red;
+    border-radius: 15px;
+    display: inline-block;
+    position: relative;
+    margin: 2px 6px 0px 6px;
+    box-shadow: 0px 2px #999;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.menu-subtract-button:hover, .menu-add-button:hover {
+    background-color: #ffefe0;
+}
+
+.menu-subtract-button:active, .menu-add-button:active {
+    background-color: #edd;
+    box-shadow: 0px 1px #666;
+    transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -webkit-transform: translateY(1px);
+}
+
+.menu-subtract-button div, .menu-add-button div {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.menu-item-content {
+    width: 80%;
+}
+
+.menu-item-content td:first-child {
+    width: 70%;
+}
+
+.menu-item-content td:last-child {
+    width: 30%;
+}
+
+#cart-link {
+    display: inline-block;
+    float: right;
+    height: 80px;
+    width: 80px;
+    margin: 0 10px 10px 10px;
+    background-image: url("/img/cart.png");
+    background-size: contain;
+    background-color:#FFFDFD;
+}
+
+#cart-link:hover {
+    background-image: url("/img/cart-light.png");
+    background-color:#FFF8F8;
+    box-shadow: 1px 1px 30px 20px #FFF8F8,
+                1px -1px 30px 20px #FFF8F8,
+                -1px 1px 30px 20px #FFF8F8,
+                -1px -1px 30px 20px #FFF8F8;
+}
+
+.inline {
+    display: inline-block;
+}
+
+/* Item page styles */
+
+#item-info {
+    width: 100%;
+}
+
+#item-info tr td:first-child {
+    position: relative;
+    width: 30%;
+    padding: 20px;
+    padding-left: 0;
+    text-align: center;
+}
+
+#item-info tr td:last-child {
+    position: relative;
+    width: 60%;
+    padding: 40px;
+    padding-top: 20px;
+    vertical-align: top;
+}
+
+#item-info img {
+    width: 100%;
+}
+
+#item-info .item-price {
+    font-size: 64pt;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+#item-info .item-price-each {
+    font-size: 11pt;
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+#item-info .item-desc {
+}
+
+#item-info .item-availability {
+    font-size: 10pt;
+    font-style: italic;
+}
+
+#item-info .item-availability.unavailable {
+    font-size: 24pt;
+    color: red;
+    font-weight: 600;
+}
+
+#item-info p {
+    padding-bottom: 10px;
+}
+#item-info .button {
+    font-size: 11pt;
+    margin: 10px;
+}
+
+#itemQuantity {
+    text-align: center;
+    width: 40px;
+}
+#updateOrder {
+    margin-left: 30px;
+}
+#backToOrder {
+    float: right;
+}
+.centered {
+    text-align: center;
+}
+
+@media screen and (max-device-width: 450px) {
+    #menu-categories {
+        width: 100%;
+        text-align: center;
+    }
+    #menu-categories h2 {
+        cursor: pointer;
+    }
+    #menu-categories p {
+        display: none;
+    }
+    #menu-list {
+        width: 100%;
+        float: left;
+    }
+}
