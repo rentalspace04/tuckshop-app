@@ -1,6 +1,6 @@
 <?php
 
-    echo "started file";
+    echo "<pre>started file";
 
     session_start();
 

@@ -1,6 +1,9 @@
 <?php
 
+echo "started user";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/helper.php";
+
+echo "included helper";
 
 class User {
     // User types
