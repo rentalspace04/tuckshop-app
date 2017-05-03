@@ -1,12 +1,6 @@
 <?php
 
-    echo "started helper";
-
-    echo $_SERVER['DOCUMENT_ROOT'] . "<br />";
-
     include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\user.php";
-
-    echo "included user";
 
     class Helper {
         public static function redirect($location, $code = 301) {
