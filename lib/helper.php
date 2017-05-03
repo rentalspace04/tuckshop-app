@@ -2,6 +2,8 @@
 
     echo "started helper";
 
+    echo $_SERVER['DOCUMENT_ROOT'];
+
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/user.php";
 
     echo "included user";
