@@ -4,7 +4,7 @@
 
     echo $_SERVER['DOCUMENT_ROOT'];
 
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/user.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\user.php";
 
     echo "included user";
 
