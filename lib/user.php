@@ -1,8 +1,10 @@
+<p>Hello</p>
+
 <?php
 
     echo "started user";
 
-    //include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\helper.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\helper.php";
 
     echo "included helper";
 
@@ -44,7 +46,7 @@
         public function getPasswordHash() {
             return $this->passwordHash;
         }
-        public function print() {
+        public function printUser() {
             echo $this->userID . "<br />";
             echo $this->typeString() . "<br />";
             echo "$this->firstName $this->lastName<br />";
@@ -232,8 +234,8 @@
         public $allowance;
         public $parentID;
 
-        function print() {
-            parent::print();
+        function printUser() {
+            parent::printUser();
             echo "Child of parent($this->parentID)<br />";
         }
     }
@@ -251,8 +253,8 @@
             $this->children[] = $child;
         }
 
-        function print() {
-            parent::print();
+        function printUser() {
+            parent::printUser();
             echo $this->balance . "<br />";
             echo "Children: ";
             foreach ($this->children as $child) {
