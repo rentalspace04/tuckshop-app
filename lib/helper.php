@@ -2,7 +2,7 @@
 
     echo "started helper";
 
-    echo $_SERVER['DOCUMENT_ROOT'];
+    echo $_SERVER['DOCUMENT_ROOT'] . "<br />";
 
     include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\user.php";
 
