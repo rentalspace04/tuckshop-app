@@ -1,6 +1,6 @@
 <?php
 
-    include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\helper.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/helper.php";
 
     class User {
         // User types

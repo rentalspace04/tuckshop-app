@@ -1,6 +1,6 @@
 <?php
 
-    include_once $_SERVER['DOCUMENT_ROOT'] . "\\lib\\user.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/user.php";
 
     class Helper {
         public static function redirect($location, $code = 301) {
