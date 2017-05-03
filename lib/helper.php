@@ -9,10 +9,15 @@
         }
 
         public static function tuckshopPDO() {
-            $host = '127.0.0.1';
-            $db   = 'tuckshop_data';
-            $user = 'root';
-            $pass = '';
+            $settings = parse_ini_file("db-settings.ini");
+            if (!$settings) {
+                echo "<h1>MAJOR ERROR: Unable to read db settings file</h1>";
+                die();
+            }
+            $host = $settings["host"];
+            $db = $settings["db"];
+            $user = $settings["user"];
+            $pass = $settings["pass"];
             $charset = 'utf8';
 
             $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
