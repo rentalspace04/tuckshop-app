@@ -335,6 +335,11 @@ h1, h2, h3, h4, h5 {
     background-color: #f8bab9;
     border-radius: 4px;
     padding: 15px;
+    margin-bottom: 30px;
+}
+
+#homepage-sidebar p:first-child {
+    font-size: 28pt;
 }
 
 #homepage-sidebar p {
@@ -345,8 +350,25 @@ h1, h2, h3, h4, h5 {
     font-family: "Raleway", sans-serif;
 }
 
+#homepage-sidebar h3 {
+    padding-bottom: 8px;
+}
+
+#homepage-sidebar .children {
+    padding: 0;
+    margin: 0;
+    margin-left: 24px;
+}
+
 #homepage-sidebar .child {
     border-bottom: 1px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    list-style-type: none;
+}
+
+#homepage-sidebar .child:last-child {
+    margin-bottom: 16px;
 }
 
 #homepage-tasks {
@@ -757,6 +779,12 @@ h1, h2, h3, h4, h5 {
 }
 
 @media screen and (max-device-width: 450px) {
+    #main-menu-options a {
+        font-size: 20pt;
+    }
+    #main-content-box {
+        min-height: initial;
+    }
     #menu-categories {
         width: 100%;
         text-align: center;
@@ -770,5 +798,19 @@ h1, h2, h3, h4, h5 {
     #menu-list {
         width: 100%;
         float: left;
+    }
+    #homepage-sidebar {
+        float: left;
+        width: 100%;
+    }
+    #homepage-sidebar p {
+        font-size: 12pt;
+    }
+    #homepage-sidebar p:first-child {
+        font-size: 32pt;
+    }
+    #homepage-tasks {
+        width: 100%;
+        margin-bottom: 3%;
     }
 }

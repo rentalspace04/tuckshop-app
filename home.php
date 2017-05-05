@@ -2,6 +2,7 @@
     session_start();
 
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/page.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/order.php";
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/helper.php";
 
     // Check that we aren't logged in - if we are, redirect to home.php
@@ -84,22 +85,33 @@
 <h1>My Tasks</h1>
 
 <div id="homepage-content">
-    <div id="homepage-sidebar">
-        <?php
-            echo "<p>$user->firstName <b>$user->lastName</b></p>";
-            if ($user->type != User::$STUDENT) {
-                echo "<p>BALANCE</p>";
-            }
-        ?>
-        <p>Date of Last Order</p>
-        <p><a href="/account.php">My Account &gt;&gt;</a></p>
-    </div>
+
     <div id="homepage-tasks">
 
         <?php
             echo makeTasks($user->type);
         ?>
 
+    </div>
+
+    <div id="homepage-sidebar">
+        <?php
+            echo "<p>$user->firstName <b>$user->lastName</b></p>";
+            if ($user->type == User::$PARENT) {
+                echo "<p>Balance: \$$user->balance</p>\n";
+                echo "<h3>Children</h3>\n<ul class=\"children\">\n";
+                foreach ($user->children as $childID) {
+                    $child = User::getById($childID);
+                    echo "<li class=\"child\">$child->firstName - \$$child->allowance</li>\n";
+                }
+            } else if ($user->type == User::$CHILD) {
+                echo "<p>Allowance: \$$user->allowance</p>\n";
+            }
+            $lastOrder = Order::getMostRecentOrder($user->userID);
+            $lastOrder = $lastOrder ? date("d/m/y h:i a", strtotime($lastOrder->orderedAt)) : "No orders yet...";
+            echo "</ul><p>Last Order: $lastOrder</p>";
+        ?>
+        <p><a href="/account.php">My Account &gt;&gt;</a></p>
     </div>
 </div>
 
