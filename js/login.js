@@ -1,7 +1,7 @@
 (function ($) {
     $(document).ready(function(){
         function showFormError(message) {
-            $("#formErrorMessage").show().html("<p>" + message + "</p>");
+            $("#errorMessage").show().html("<p>" + message + "</p>");
         }
 
         function acceptLoginResult(resp) {
@@ -81,7 +81,7 @@
 
             console.log("Validating form before submission.");
 
-            $("#formErrorMessage").hide();
+            $("#errorMessage").hide();
 
             // Wait for 500ms so the user sees the feedback - i.e. form is invalid etc.
             setTimeout(trySubmitForm, 500)

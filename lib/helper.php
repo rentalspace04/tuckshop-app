@@ -64,6 +64,28 @@
                 unset($_SESSION["cart"]);
             }
         }
+
+        public static function getOrderTimes() {
+            $pdo = Helper::tuckshopPDO();
+            $query = "SELECT timeName FROM OrderTimes";
+            $statement = $pdo->prepare($query);
+
+            $statement->execute();
+            $times = $statement->fetchAll(PDO::FETCH_COLUMN);
+
+            return $times;
+        }
+
+        public static function isOrderTime($orderTime) {
+            $pdo = Helper::tuckshopPDO();
+            $query = "SELECT COUNT(*) FROM OrderTimes WHERE timeName=?";
+            $statement = $pdo->prepare($query);
+
+            $statement->execute([$orderTime]);
+            $isAnOrderTime = $statement->fetchColumn();
+
+            return $isAnOrderTime;
+        }
     }
 
 ?>

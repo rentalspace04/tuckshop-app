@@ -302,7 +302,7 @@ body {
     outline: none;
 }
 
-#formErrorMessage {
+#errorMessage {
     display: none;
     width: 60%;
     margin-left: 20%;
@@ -322,7 +322,10 @@ body {
 
 h1 {
     font-family: "Raleway", sans-serif;
-    font-size: 32pt;
+    font-size: 36pt;
+}
+
+h1, h2, h3, h4, h5 {
     padding-bottom: 15px;
 }
 
@@ -493,11 +496,11 @@ h1 {
     box-shadow: 0px 2px #999;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                          supported by Chrome and Opera */
 }
 
 .menu-subtract-button:hover, .menu-add-button:hover {
@@ -628,8 +631,129 @@ h1 {
 #backToOrder {
     float: right;
 }
+
+/* Styles for viewcart page */
+#cartList {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    font-size: 20pt;
+}
+
+#cartList thead {
+    background-color: #f7a1a1;
+}
+
+#cartList td {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+#cartList tbody td {
+    border-bottom: 1px solid black;
+}
+
+#cartList tbody tr:nth-child(even) td {
+    background-color: #fde8e8;
+}
+
+#cartList tbody tr:last-child td {
+    border: none;
+}
+
+#order-total {
+    padding-top: 20px;
+    text-align: right;
+}
+
+#order-total-price {
+    font-weight: normal;
+}
+
+/* Confirm Order Page styles */
+
+#order-message-container {
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+#order-message {
+    display: none;
+    width: 50%;
+    border-radius: 5px;
+    border: 3px solid;
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+#order-message.success {
+    background-color: #80ffaa;
+    border-color: #00b33c;
+}
+
+#order-message.failure {
+    background-color: #ffe6e6;
+    border-color: #e60000;
+}
+
+#placeOrderForm {
+    text-align: center;
+    margin-bottom: 20px;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+#placeOrderForm table td {
+    padding: 5px 20px;
+}
+
+#placeOrderForm table td:first-child {
+    text-align: right;
+}
+
+#placeOrderForm table td:last-child {
+    text-align: left;
+}
+
+#placeOrderForm label {
+    font-size:24pt;
+}
+
+.dropdown {
+    display: block;
+    font-size: 18pt;
+    border: none;
+    outline: none;
+    border-radius: 0px;
+    background-color: #f6f6f6;
+}
+
+.dropdown:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown:focus {
+    background-color: #e6e6e6;
+}
+
+.dropdown.error {
+    background-color: #f0b0b0;
+    border-bottom: 2px solid #f00;
+}
+
+/* Some more generic styling */
+
 .centered {
     text-align: center;
+}
+
+#confirmButtonRow {
+    text-align: center !important;
 }
 
 @media screen and (max-device-width: 450px) {

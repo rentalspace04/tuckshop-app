@@ -19,7 +19,7 @@
 
 ?>
         <form id="login-form" <?php echo "action=\"$redirectAction\"" ?>>
-            <div id="formErrorMessage"></div>
+            <div id="errorMessage"></div>
             <table>
                 <tbody>
                     <tr>

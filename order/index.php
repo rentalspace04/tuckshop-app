@@ -19,6 +19,7 @@
     $page->addScript("/js/class.js");
     $page->addScript("/js/order.js");
 
+    $page->addMenuItem("/order/viewCart.php", "Place<br />Order");
     $page->addMenuItem("/index.php", "Cancel<br />Order");
     $page->addMenuItem("/logout.php", "Log<br />Out");
 
