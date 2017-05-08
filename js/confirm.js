@@ -5,7 +5,7 @@
         if (resp.responseJSON) {
             var json = resp.responseJSON;
             if (json["success"]) {
-                $("#order-message").show().addClass("success").text("Order successfully submitted! Redirecting to home...");
+                $("#order-message").show().removeClass("failure").addClass("success").text("Order successfully submitted! Redirecting to home...");
                 // Order has been submitted successfully
                 setTimeout(function(){
                     window.location.href = "/home.php";
@@ -70,7 +70,7 @@
         } else {
             // Student Users
             return {
-                paymentType: $("#paymentType option:selected").text(),
+                paymentType: $("#paymentType option:selected").attr("data-payment-id"),
                 pickupTime: $("#pickupTime option:selected").text(),
             };
         }

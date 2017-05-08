@@ -18,6 +18,31 @@
             }
         }
 
+        public function getCost() {
+            $cost = 0;
+
+            foreach ($this->orderItems as $oi) {
+                $cost += $oi->getCost();
+            }
+
+            return $cost;
+        }
+
+        public function getStatus() {
+            $lowest = null; // Start at "positive infinity"
+            foreach ($this->orderItems as $oi) {
+                if (!isset($lowest) || $lowest > $oi->stateID) {
+                    $lowest = $stateID;
+                }
+            }
+
+            return State::getStateById($lowest);
+        }
+
+        public function isOwner($userID) {
+            return $userID == $this->madeFor || $userID == $this->madeBy;
+        }
+
         public static function getOrderByID($id) {
             // Prepare the query and PDO
             $pdo = Helper::tuckshopPDO();
@@ -47,10 +72,10 @@
             return $order;
         }
 
-        public static function getUsersOrderIDs($userID) {
+        public static function getUserOrderIDs($userID) {
             // Prepare the query and PDO
             $pdo = Helper::tuckshopPDO();
-            $query = "SELECT orderID FROM Orders WHERE madeFor=? OR madeBy=?";
+            $query = "SELECT orderID FROM Orders WHERE madeFor=? OR madeBy=? ORDER BY orderedAt DESC";
             $statement = $pdo->prepare($query);
 
             $statement->execute([$userID, $userID]);
@@ -87,6 +112,17 @@
 
             return Order::getOrderByID($orderID);
         }
+
+        public static function orderIdExists($id) {
+            $pdo = Helper::tuckshopPDO();
+            $query = "SELECT COUNT(*) FROM Orders WHERE orderID=?";
+            $statement = $pdo->prepare($query);
+
+            $statement->execute([$id]);
+            $matches = $statement->fetchColumn();
+
+            return $matches;
+        }
     }
 
     class OrderItem {
@@ -95,6 +131,11 @@
         public $itemID;
         public $stateID;
         public $notes;
+
+        public function getCost() {
+            $item = Item::getItemById($this->itemID);
+            return $item->price;
+        }
 
         public static function getOrderItemByID($id) {
             // Prepare the query and PDO
@@ -115,7 +156,7 @@
         public $name;
         public $stateID;
 
-        public static function getStateByID($id) {
+        public static function getStateById($id) {
             // Prepare the query and PDO
             $pdo = Helper::tuckshopPDO();
             $query = "SELECT name FROM States WHERE stateID=?";

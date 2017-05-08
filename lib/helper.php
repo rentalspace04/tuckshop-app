@@ -8,6 +8,10 @@
             exit();
         }
 
+        public static function isInteger($input){
+            return ctype_digit(strval($input));
+        }
+
         public static function tuckshopPDO() {
             $settings = parse_ini_file("db-settings.ini");
             if (!$settings) {

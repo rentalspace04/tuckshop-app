@@ -44,7 +44,7 @@
 
     // Task generating functions
     function newOrderTaskBlock() {
-        $output = "<a href=\"/order/\" class=\"task-block\">";
+        $output = "<a href=\"/order/index.php\" class=\"task-block\">";
         $output .= "<h2>New Order</h2>";
         $output .= "<p>Hungry?</p>";
         $output .= "<p>Place a new order.</p>";
@@ -63,7 +63,7 @@
     }
 
     function orderHistoryTaskBlock() {
-        $output = "<a href=\"/orderHistory.php\" class=\"task-block\">";
+        $output = "<a href=\"/history/index.php\" class=\"task-block\">";
         $output .= "<h2>Order History</h2>";
         $output .= "<p>Wanna see whether your order is ready?</p>";
         $output .= "<p>Can't remember what you had for lunch yesterday?</p>";

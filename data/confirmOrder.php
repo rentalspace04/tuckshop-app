@@ -13,6 +13,7 @@
         $json = new stdClass();
         $json->success = false;
         $json->message = "[$errno] - $errstr";
+        $json->serverError = true;
 
         echo json_encode($json);
         exit();
@@ -43,6 +44,7 @@
         $result = new stdClass();
         $result->success = false;
         $result->message = "";
+        $result->serverError = false;
         switch (strtolower($type)) {
             // These are handled externally
             case "paypal":
@@ -67,6 +69,7 @@
         $result = new stdClass();
         $result->success = false;
         $result->message = "";
+        $result->serverError = true;
 
         $cost = $cart->totalCost();
 
@@ -77,13 +80,15 @@
             // Update the user's balance in db
             if (Update::balance($pdo, $user, $newBalance)) {
                 $result->success = true;
+                $result->serverError = false;
             } else {
                 // It fails....
                 $result->message = "Failed to update balance in db";
             }
 
         } else {
-            $result->message = "$user->firstName $user->lastName's balance isn't enough to pay for order";
+            $result->message = "Your balance isn't enough to pay for order";
+            $result->serverError = false;
         }
 
         return $result;
@@ -95,6 +100,7 @@
         $result = new stdClass();
         $result->success = false;
         $result->message = "";
+        $result->serverError = true;
 
         // The payee is either the child (if the one ordering is a parent) or
         // the user making an order (if the one ordering is a student)
@@ -108,12 +114,15 @@
             // Update payee's allowance
             if (Update::allowance($pdo, $payee, $newAllowance)) {
                 $result->success = true;
+                $result->serverError = false;
             } else {
                 // It fails....
                 $result->message = "Failed to update allowance in db";
             }
         } else {
-            $result->message = "$payee->firstName $payee->lastName's allowance is not enough to pay for this order";
+            $name = $payee == $user ? "Your child's" : "Your";
+            $result->message = "$name allowance is not enough to pay for this order";
+            $result->serverError = false;
         }
 
         return $result;
@@ -121,6 +130,7 @@
 
     $json = new stdClass();
     $json->success = false;
+    $json->serverError = true;
     $json->message = "";
 
     // User should be logged in and have a cart in session
@@ -148,6 +158,7 @@
                 if ($paymentResult->success) {
                     if ($cart->submitAsNewOrder($pdo, $user, $forUser, $_POST["pickupTime"])) {
                         $json->success = true;
+                        $json->serverError = false;
                         $pdo->commit(); // It succeeded, so save db changes
                     } else {
                         $json->message = "Unable to submit order";
@@ -155,6 +166,7 @@
                     }
                 } else {
                     $json->message = $paymentResult->message;
+                    $json->serverError = $paymentResult->serverError;
                     $pdo->rollback(); // It failed, so rollback db changes
                 }
             } else {
