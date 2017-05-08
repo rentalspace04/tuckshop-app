@@ -20,7 +20,7 @@
     // $page->addScript("/js/history.js");
 
     $page->addMenuItem("/index.php", "Home");
-    $page->addMenuItem("/order/viewCart.php", "Place<br />Order");
+    $page->addMenuItem("/order/index.php", "Place<br />Order");
     $page->addMenuItem("/logout.php", "Log<br />Out");
 
     // Show page 1 of results by default
