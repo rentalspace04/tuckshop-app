@@ -28,19 +28,33 @@
             return $cost;
         }
 
-        public function getStatus() {
-            $lowest = null; // Start at "positive infinity"
+        public function getState() {
+            $lowest = null;
+
             foreach ($this->orderItems as $oi) {
                 if (!isset($lowest) || $lowest > $oi->stateID) {
-                    $lowest = $stateID;
+                    $lowest = $oi->stateID;
                 }
             }
 
-            return State::getStateById($lowest);
+            return $lowest;
         }
 
         public function isOwner($userID) {
             return $userID == $this->madeFor || $userID == $this->madeBy;
+        }
+
+        // Returns an array of itemID => quantity pairs of items in this order
+        public function collectItems() {
+            $items = array();
+            foreach ($this->orderItems as $oi) {
+                if (array_key_exists($oi->itemID, $items)) {
+                    $items[$oi->itemID]++;
+                } else {
+                    $items[$oi->itemID] = 1;
+                }
+            }
+            return $items;
         }
 
         public static function getOrderByID($id) {

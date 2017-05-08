@@ -43,13 +43,43 @@
     function getContent($order, $user) {
         $out = "";
 
+        $out .= "<h1>Order #$order->orderID</h1>\n";
+        $state = State::getStateById($order->getState());
+        $stateClass = strtolower(str_replace(" ", "-", $state));
+        $out .= "<div id=\"orderState\" class=\"$stateClass\"><p class=\"centered\">$state</p></div>";
+        $orderedAt = date("d/m/y h:i A", strtotime($order->orderedAt));
+        $out .= "<p>Made: $orderedAt</p>";
+        if ($user->type == User::$PARENT) {
+            $madeFor = User::getById($order->madeFor);
+            $out .= "<p>For: $madeFor->firstName $madeFor->lastName</p>";
+        }
+        $price = number_format($order->getCost(), 2);
+        $out .= "<p>Price: \$$price</p>";
+        $out .= makeOrderTable($order);
         $out .= "";
-        $out .= "";
-        $out .= "";
-        $out .= "";
-        $out .= "";
-        $out .= "";
-        $out .= "";
+
+        return $out;
+    }
+
+    function makeOrderTable($order) {
+        $out = "";
+
+        $out .= "<table id=\"cartList\"><thead><tr>";
+        $out .= "<th>Item</th>";
+        $out .= "<th>Price</th>";
+        $out .= "<th>Quantity</th>";
+        $out .= "<th>Subtotal</th></thead><tbody>";
+        foreach ($order->collectItems() as $itemID => $quantity) {
+            $item = Item::getItemById($itemID);
+            $out .= "<tr><td>$item->name</td>";
+            $price = number_format($item->price, 2);
+            $out .= "<td>\$$price</td>";
+            $out .= "<td>$quantity</td>";
+            $subtotal = number_format($item->price * $quantity, 2);
+            $out .= "<td>$subtotal</td></tr>";
+
+        }
+        $out .= "</tbody></table>";
 
         return $out;
     }
@@ -83,6 +113,7 @@
         $page = new Page("Invalid Request", $user);
     }
 
+    $page->addMenuItem("/index.php", "Home");
     $page->addMenuItem("/history/index.php", "Order<br />History");
     $page->addMenuItem("/logout.php", "Log<br />Out");
 
