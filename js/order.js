@@ -96,6 +96,15 @@
             }
         });
 
+        var mobile = window.matchMedia("screen and (max-device-width: 450px)");
+        if (mobile.matches) {
+            console.log("is mobile phone");
+            $("#menu-categories h2").on("click", function(e) {
+
+                $("#menu-categories p").slideToggle();
+            })
+        }
+
         // The category that's currently being displayed in the menu
         var currentCategory = 0; // category 0 = 'All Items'
 
