@@ -178,6 +178,7 @@ body {
 #dialog-body {
     position: relative;
     margin: 100px 25%;
+    padding-bottom: 20px;
     width: 50%;
     min-width: 300px;
     min-height: 300px;
@@ -846,6 +847,92 @@ h1, h2, h3, h4, h5 {
     font-weight: 600;
     text-decoration: none;
     cursor: default;
+}
+
+/**/
+.tab-select {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 40px 0 40px;
+    box-sizing: border-box;
+    width: 100%;
+    display: -webkit-inline-flex;
+    -webkit-justify-content: center;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.tab-select li {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 5px 0 0;
+    border: none;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    color: #fff;
+    background-color: #f17674;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0px -3px #999;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.tab-select li:hover {
+    background-color: #ea312e;
+}
+
+.tab-select li.selected {
+    background-color: #e9231e;
+    box-shadow: 0px -2px #666;
+}
+
+#createAccountFormContainer {
+    border: 4px solid #e9231e;
+    margin: 0px 30px 10px 30px;
+    padding: 20px;
+    overflow-y: hidden;
+}
+
+#createAccountStudent, #createAccountParent {
+    position: relative;
+}
+
+#createAccountParent {
+    display: none;
+}
+
+h2.formQuestion {
+    text-align: center;
+    margin-top: 20px;
+}
+
+form table.form-table {
+    width: 100%;
+}
+
+form table.form-table td:first-child {
+    text-align: right;
+    width: 1px; /* Fit to width*/
+    white-space: pre;
+    padding: 20px;
+}
+
+form table.form-table td:last-child {
+    text-align: left;
+    position: relative;
+}
+
+form table.form-table td:last-child input {
+    width: 100%;
+}
+
+label.required::after {
+    content: "*";
 }
 
 /* Some more generic styling */

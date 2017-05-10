@@ -25,7 +25,7 @@
                 </div>
                 <div id="fpw-create-account">
                     <p>Don't have an account with us?</p>
-                    <a href="template.html">Create an Account</a>
+                    <a href="/account/create.php">Create an Account</a>
                 </div>
             </div>
             <p>You can use Tuckr to check what's on the menu and what's in stock, and make your order quickly and easily.</p>
