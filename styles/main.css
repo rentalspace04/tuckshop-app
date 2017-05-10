@@ -959,6 +959,9 @@ label.required::after {
     #menu-categories h2 {
         cursor: pointer;
     }
+    #menu-categories h2:after {
+        content: "\2193";
+    }
     #menu-categories p {
         display: none;
     }
