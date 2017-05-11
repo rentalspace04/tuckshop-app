@@ -19,6 +19,8 @@
     function getFormTable($isParent) {
         $out = "";
 
+        $out .= "<p id=\"errorMessage\" class=\"centered\"></p>";
+
         $out .= "<table class=\"form-table\"><tbody>";
 
         $out .= addText($isParent, true, "First Name");
@@ -37,6 +39,8 @@
         $out .= addPassword($isParent, true, "confirmpassword", "Confirm Password", "Password");
 
         $out .= "</tbody></table>";
+
+        $out .= "<p class=\"centered\"><input type=\"submit\" class=\"button\" value=\"Create Account\" /></p>";
 
         return $out;
     }
@@ -82,12 +86,10 @@
 <div id="createAccountFormContainer">
     <form id="createAccountStudent" class="create-account-form">
         <?php echo getFormTable(false); ?>
-        <p class="centered"><input type="submit" class="button"value="Create Account" /></p>
     </form>
 
     <form id="createAccountParent" class="create-account-form">
         <?php echo getFormTable(true); ?>
-        <p class="centered"><input type="submit" class="button" value="Create Account" /></p>
     </form>
 </div>
 

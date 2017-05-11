@@ -931,7 +931,7 @@ form table.form-table td:last-child input {
     width: 100%;
 }
 
-label.required::after {
+label.required:after {
     content: "*";
 }
 
@@ -960,7 +960,7 @@ label.required::after {
         cursor: pointer;
     }
     #menu-categories h2:after {
-        content: "\2193";
+        content: " \2193";
     }
     #menu-categories p {
         display: none;

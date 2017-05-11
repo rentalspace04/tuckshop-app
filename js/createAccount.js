@@ -30,18 +30,77 @@
         return $(".tab-select > li.selected").attr("data-form-id");
     }
 
+    function showErrorMessage(message, msgShown) {
+        if (!msgShown) {
+            $("#errorMessage").text(message).slideDown(100);
+        }
+    }
+
+    function clearErrorMessage(){
+        $("#errorMessage").slideUp(100);
+    }
+
+    function getInput(tabID, name) {
+        return $("#" + tabID + " input[name=\"" + name + "\"]");
+    }
+
+    function isInteger(val) {
+        return ("" + val).match("^[0-9]+$") != null;
+    }
+
     function validateForm() {
         var currentTabID = getCurrentTabID();
         var valid = true;
+        var msgShown = false;
 
         $("#" + currentTabID + " input.required").each(function (i, elem) {
+            // Check that the required inputs have a value
             if ($(elem).val() == "") {
                 $(elem).addClass("error");
+                showErrorMessage("You're missing some required field(s).", msgShown);
+                msgShown = true;
                 valid = false;
             } else {
                 $(elem).removeClass("error");
             }
-        })
+        });
+
+        if (!valid) {
+            return false;
+        }
+
+        var pwd = getInput(currentTabID, "password");
+        var cpwd = getInput(currentTabID, "confirmpassword");
+
+        if ($(pwd).val() != $(cpwd).val()) {
+            $(pwd).addClass("error");
+            $(cpwd).addClass("error");
+            showErrorMessage("Passwords don't match", msgShown);
+            return false;
+        }
+
+        // Check that the year level is valid
+        var yearlevel = getInput(currentTabID, "yearlevel").each(function(i, yl){
+            var level = $(yl).val();
+            if (!isInteger(level) || level <= 0 && level > 12) {
+                valid = false;
+                showErrorMessage("Invalid Year Level of '" + level + "'");
+                $(yl).addClass("error");
+            }
+        });
+
+        if (!valid) {
+            return false;
+        }
+
+        // Check that the date is valid
+
+        // Check that the email is unused
+        // TODO
+
+        if (valid) {
+            clearErrorMessage();
+        }
 
         return valid;
     }
@@ -54,7 +113,6 @@
 
     function trySubmitForm(e) {
         e.preventDefault();
-        console.log(e);
         if (validateForm()) {
             console.log("Form valid. Beginning submission");
         } else {
@@ -70,6 +128,12 @@
             clearSelectedTabs($(target).parent());
             $(target).addClass("selected");
         });
+
+        $("form input.required").on("change", function(e){
+            if ($(e.target).val() != "") {
+                $(e.target).removeClass("error");
+            }
+        })
 
         $("#createAccountParent").submit(trySubmitForm);
         $("#createAccountStudent").submit(trySubmitForm);
