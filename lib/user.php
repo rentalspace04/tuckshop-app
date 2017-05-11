@@ -1,6 +1,7 @@
 <?php
 
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/helper.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/token.php";
 
     class User {
         // User types
@@ -63,18 +64,18 @@
             // ID is unique, so there should only be one row
             $user = $user[0];
 
-            return User::specialiseUser($user);
+            return self::specialiseUser($user);
         }
 
         protected static function specialiseUser($baseUser) {
             // Fetch type specific info
             switch ($baseUser->type) {
-                case User::$STUDENT:
-                    return User::getStudent($baseUser);
-                case User::$CHILD:
-                    return User::getChild($baseUser);
-                case User::$PARENT:
-                    return User::getParent($baseUser);
+                case self::$STUDENT:
+                    return self::getStudent($baseUser);
+                case self::$CHILD:
+                    return self::getChild($baseUser);
+                case self::$PARENT:
+                    return self::getParent($baseUser);
                 default:
                     return $baseUser;
             }
@@ -159,7 +160,7 @@
             $user = $user[0];
 
             // Get all the info for that user's user type
-            return User::specialiseUser($user);
+            return self::specialiseUser($user);
         }
 
         public static function idExists($id) {
@@ -227,18 +228,18 @@
                 $extendResult = false;
 
                 // Now "extend" the user - make them a student/parent/child
-                if ($user->type = User::$STUDENT) {
-                    $extendResult = User::createStudent($pdo, $user);
-                } else if ($user->type = User::$PARENT) {
-                    $extendResult = User::createParent($pdo, $user);
+                if ($user->type == self::$STUDENT) {
+                    $extendResult = self::createStudent($pdo, $user);
+                } else if ($user->type == self::$PARENT) {
+                    $extendResult = self::createParent($pdo, $user);
                 } else {
-                    $extendResult = User::createChild($pdo, $user);
+                    $extendResult = self::createChild($pdo, $user);
                 }
 
                 // Only continue if extending the user worked
                 if ($extendResult) {
                     // Make a verification token for the user
-                    $token = User::makeVerificationToken($pdo, $user);
+                    $token = Token::makeVerificationToken($pdo, $user);
                     if ($token->success) {
                         $result->token = $token->token;
                         $result->success = true;
@@ -250,48 +251,6 @@
             }
             // rollback if it didn't
             $pdo->rollback();
-            return $result;
-        }
-
-        private static function tokenExists($token, $pdo = null) {
-            if ($pdo == null) {
-                $pdo = Helper::tuckshopPDO();
-            }
-            $query  = "SELECT COUNT(*) FROM Tokens WHERE token = ?";
-
-            $statement = $pdo->prepare($query);
-            $statement->execute([$token]);
-
-            return $statement->fetchColumn() > 0;
-        }
-
-        private static function makeVerificationToken($pdo, $user) {
-            $result = new stdClass();
-            $result->success = false;
-            $result->token = "";
-
-            // Make sure that the token is unique
-            do {
-                $token = Helper::makeToken();
-            } while (User::tokenExists($token, $pdo));
-
-            $result->token = $token;
-
-            $query  = "INSERT INTO Tokens (forUser, token, tokenType, used) VALUES (:uid, :token, :ttype, :used)";
-
-            $params = [
-                "uid" => $user->userID,
-                "token" => $token,
-                "ttype" => 1,
-                "used" => false
-            ];
-
-            $statement = $pdo->prepare($query);
-            $statement->execute($params);
-
-            if ($statement->rowCount() > 0) {
-                $result->success = true;
-            }
             return $result;
         }
 
@@ -326,7 +285,7 @@
         }
 
         private static function createChild($pdo, $user) {
-            $studentResult = User::createStudent($pdo, $user);
+            $studentResult = self::createStudent($pdo, $user);
             if (!$studentResult) {
                 return false;
             }
@@ -347,15 +306,23 @@
 
         public function typeString() {
             switch ($this->type) {
-                case User::$STUDENT:
+                case self::$STUDENT:
                     return "Student";
-                case User::$CHILD:
+                case self::$CHILD:
                     return "Child";
-                case User::$PARENT:
+                case self::$PARENT:
                     return "Parent";
                 default:
                     return "User...";
             }
+        }
+
+        public static function isConfirmed($userID) {
+            if (self::idExists($userID)) {
+                $user = self::getByID($userID);
+                return $user->confirmed;
+            }
+            return false;
         }
 
     }

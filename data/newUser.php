@@ -45,7 +45,7 @@
             && isset($_POST["dateofbirth"]) && isset($_POST["password"])) {
 
             $data = new stdClass();
-            $data->type = 3;
+            $data->type = User::$PARENT;
             $data->firstName = $_POST["firstname"];
             $data->lastName = $_POST["lastname"];
             $data->email = $_POST["email"];
@@ -64,7 +64,7 @@
     function checkStudentData() {
         $data = checkParentData();
         if ($data && isset($_POST["yearlevel"]) && isset($_POST["studentnumber"])) {
-            $data->type = 1;
+            $data->type = User::$STUDENT;
             $data->yearlevel = $_POST["yearlevel"];
             $data->studentNumber = $_POST["studentnumber"];
             $data->class = isset($_POST["class"]) ? $_POST["class"] : null;

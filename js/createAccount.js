@@ -26,6 +26,11 @@
         // Transfer: first name, last name, email, phone, dob, password,
         //           confirm password
         $("#" + currentTabID + " input").each(function(i, elem) {
+            // Don't transfer value from hidden and submit elements
+            var type = $(elem).attr("type");
+            if (type == "hidden" || type == "submit") {
+                return;
+            }
             transferFormData($(elem).attr("name"), currentTabID, newTabID);
         });
     }
@@ -166,6 +171,7 @@
                 console.warn(name, value);
             }
         });
+        console.log(parameters);
         return parameters;
     }
 
@@ -180,7 +186,7 @@
                     var json = resp.responseJSON;
                     if (json) {
                         if (json.okay) {
-                            resolve();
+                            resolve(json.token);
                         } else {
                             reject(Error("Unable to submit user"));
                         }
@@ -195,6 +201,17 @@
         });
     }
 
+    function showUserCreatedMessage(token) {
+        $("#dialog-body").empty();
+        var successMessage = $("<div id='successMessage'></div>");
+        successMessage.append(
+            $("<p>Successfully created user.</p>"),
+            $("<p>You can verify your account with the following token:</p>"),
+            $("<p>" + encodeURI(token) + "</p>")
+        );
+        $("#dialog-body").append(successMessage).css("padding-top","10%");
+    }
+
     // Form submit order is:
     //    - validate form
     //    - check email is unused (asynchronously)
@@ -202,27 +219,23 @@
     function trySubmitForm(e) {
         e.preventDefault();
 
-        //
-        // REMEMBER TO REMOVE || true
-        //
-        if (validateForm() || true) {
+        if (validateForm()) {
             console.log("Form valid. Beginning submission");
             // Check the email doesn't belong to another user
             checkEmail().then(function() {
-                    // Now that we know the email's okay try to submit the new
-                    // user
-                    submitNewUser().then(function(){
-                        // The user was successfully submitted
-                        console.log("submitted user");
-                    }).catch(function(err){
-                        // There was a problem submitting the user
-                        console.error(err.message);
-                    });
+                // Now that we know the email's okay try to submit the new
+                // user
+                submitNewUser().then(function(token){
+                    // The user was successfully submitted
+                    showUserCreatedMessage(token);
                 }).catch(function(err){
-                        showErrorMessage(err.message);
-                        getInput(getCurrentTabID(), "email").addClass("error");
-                    }
-            ).then();
+                    // There was a problem submitting the user
+                    showErrorMessage("Unable to create user. " + err.message);
+                });
+            }).catch(function(err){
+                showErrorMessage(err.message);
+                getInput(getCurrentTabID(), "email").addClass("error");
+            });
         } else {
             console.log("Invalid form data")
         }
