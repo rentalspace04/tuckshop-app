@@ -4,6 +4,7 @@
     }
 
     function showForm(targetTab) {
+        clearErrorMessage();
         var newTabID = $(targetTab).attr("data-form-id");
         var currentTabID = getCurrentTabID();
         // Don't do transition if they've clicked on the same tab
@@ -12,7 +13,10 @@
         }
         var newHeight = $("#" + newTabID).height();
         // Change the height to fit the new form
-        $("#createAccountFormContainer").animate({"height": newHeight}, 400);
+        $("#createAccountFormContainer").animate({"height": newHeight}, 400, function(){
+            $("#createAccountFormContainer").css("height", "auto");
+        });
+
         // Fade the old form out and the new one in
         $("#" + currentTabID).fadeOut(200, function(){
             $("form#" + newTabID).fadeIn(200);
@@ -32,12 +36,12 @@
 
     function showErrorMessage(message, msgShown) {
         if (!msgShown) {
-            $("#errorMessage").text(message).slideDown(100);
+            $("#" + getCurrentTabID() + " .errorMessage").text(message).slideDown(100);
         }
     }
 
     function clearErrorMessage(){
-        $("#errorMessage").slideUp(100);
+        $(".errorMessage").slideUp(100);
     }
 
     function getInput(tabID, name) {
@@ -80,9 +84,9 @@
         }
 
         // Check that the year level is valid
-        var yearlevel = getInput(currentTabID, "yearlevel").each(function(i, yl){
+        getInput(currentTabID, "yearlevel").each(function(i, yl) {
             var level = $(yl).val();
-            if (!isInteger(level) || level <= 0 && level > 12) {
+            if (!isInteger(level) || (level <= 0 || level > 12)) {
                 valid = false;
                 showErrorMessage("Invalid Year Level of '" + level + "'");
                 $(yl).addClass("error");
@@ -94,9 +98,20 @@
         }
 
         // Check that the date is valid
-
-        // Check that the email is unused
         // TODO
+
+        // Check that the email is valid looking
+        getInput(currentTabID, "email").each(function(i, emailInput) {
+            var email = $(emailInput).val();
+            // Should be <>@<>.<> (last <> can be <>.<>.<>....)
+            var emailPattern = /.+@.+\..+/;
+            if (!emailPattern.test(email)) {
+                valid = false;
+                showErrorMessage("Please give a valid email.");
+                $(emailInput).addClass("error");
+                return;
+            }
+        });
 
         if (valid) {
             clearErrorMessage();
@@ -111,10 +126,98 @@
         );
     }
 
+    // Checks that the email given isn't currently being used
+    function checkEmail() {
+        var email = getInput(getCurrentTabID(), "email").val();
+        return new Promise(function(resolve, reject){
+            new Ajax.Request('/data/checkEmail.php', {
+                method: 'get',
+                parameters: {
+                    email: email
+                },
+                onSuccess: function(resp) {
+                    // Check to see if there's JSON
+                    var json = resp.responseJSON;
+                    if (json) {
+                        if (json.okay) {
+                            resolve();
+                        } else {
+                            reject(Error("Email address is already in use."));
+                        }
+                    } else {
+                        reject(Error("Request from server was invalid. Try again later."))
+                    }
+                },
+                onFailure: function(resp) {
+                    reject(Error("Unable to check the email... Try again later."));
+                }
+            });
+        });
+    }
+
+    function getFormParameters() {
+        var parameters = {};
+        $("#" + getCurrentTabID() + " input").each(function(i, elem) {
+            var name = $(elem).attr("name");
+            var value = $(elem).val();
+            parameters[name] = value;
+        });
+        return parameters;
+    }
+
+    function submitNewUser() {
+        var params = getFormParameters();
+        return new Promise(function(resolve, reject){
+            new Ajax.Request("/data/newUser.php",{
+                method: "post",
+                parameters: params,
+                onSuccess: function(resp) {
+                    var json = resp.responseJSON;
+                    if (json) {
+                        if (json.okay) {
+                            resolve();
+                        } else {
+                            reject(Error("Unable to submit user"));
+                        }
+                    } else {
+                        reject(Error("The server didn't respond correctly. Try again later."));
+                    }
+                },
+                onFailure: function (resp){
+                    reject(Error("Unable to submit new user. Try again later"));
+                }
+            });
+        });
+    }
+
+    // Form submit order is:
+    //    - validate form
+    //    - check email is unused (asynchronously)
+    //    - try to submit data (async)
     function trySubmitForm(e) {
         e.preventDefault();
-        if (validateForm()) {
+
+        //
+        // REMEMBER TO REMOVE || true
+        //
+        if (validateForm() || true) {
             console.log("Form valid. Beginning submission");
+            // Check the email doesn't belong to another user
+            checkEmail().then(function() {
+                    // Now that we know the email's okay try to submit the new
+                    // user
+                    submitNewUser().then(function(){
+                        // The user was successfully submitted
+                        console.log("submitted user");
+                    }).catch(function(err){
+                        // There was a problem submitting the user
+                        console.error(err.message);
+                    });
+                }).catch(function(err){
+                        showErrorMessage(err.message);
+                        getInput(getCurrentTabID(), "email").addClass("error");
+                    }
+            ).then();
         } else {
             console.log("Invalid form data")
         }

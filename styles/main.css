@@ -317,7 +317,7 @@ body {
     outline: none;
 }
 
-#errorMessage {
+#errorMessage, .errorMessage {
     display: none;
     width: 60%;
     margin-left: 20%;

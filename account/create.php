@@ -19,7 +19,7 @@
     function getFormTable($isParent) {
         $out = "";
 
-        $out .= "<p id=\"errorMessage\" class=\"centered\"></p>";
+        $out .= "<p class=\"errorMessage centered\"></p>";
 
         $out .= "<table class=\"form-table\"><tbody>";
 
@@ -38,7 +38,11 @@
         $out .= addPassword($isParent, true, "Password");
         $out .= addPassword($isParent, true, "confirmpassword", "Confirm Password", "Password");
 
+        $hiddenValue = $isParent ? "parent" : "student";
+
         $out .= "</tbody></table>";
+
+        $out .= "<input type=\"hidden\" name=\"userType\" value=\"$hiddenValue\" />";
 
         $out .= "<p class=\"centered\"><input type=\"submit\" class=\"button\" value=\"Create Account\" /></p>";
 
