@@ -99,10 +99,15 @@
             echo "<p>$user->firstName <b>$user->lastName</b></p>";
             if ($user->type == User::$PARENT) {
                 echo "<p>Balance: \$$user->balance</p>\n";
-                echo "<h3>Children</h3>\n<ul class=\"children\">\n";
-                foreach ($user->children as $childID) {
-                    $child = User::getById($childID);
-                    echo "<li class=\"child\">$child->firstName - \$$child->allowance</li>\n";
+                echo "<h3>Children</h3>\n";
+                if (count($user->children) == 0) {
+                    echo "<p><i>You don't have any children yet.</i></p>";
+                } else {
+                    echo "<ul class=\"children\">\n";
+                    foreach ($user->children as $childID) {
+                        $child = User::getById($childID);
+                        echo "<li class=\"child\">$child->firstName - \$$child->allowance</li>\n";
+                    }
                 }
             } else if ($user->type == User::$CHILD) {
                 echo "<p>Allowance: \$$user->allowance</p>\n";
