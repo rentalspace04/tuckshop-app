@@ -190,17 +190,159 @@
             return $count > 0;
         }
 
-        // Make a new user object
-        public static function newUser($id, $fname, $lname, $email, $dob, $phone, $type, $passwordHash, $confirmed = false) {
-            $this->id = $id;
-            $this->firstName = $fname;
-            $this->lastName = $lname;
-            $this->email = $email;
-            $this->dateOfBirth = $dob;
-            $this->phone = $phone;
-            $this->passwordHash = $passwordHash;
-            $this->type = $type;
-            $this->confirmed = $confirmed;
+        // Tries to insert a new user into the database and returns an object
+        // containing the new user's id and the verification token if it is
+        // successful. If not, makes no changes to the db and returns false
+        public static function createUser($user) {
+            $result = new stdClass();
+            $result->success = false;
+            $result->token = "";
+            $result->userID = -1;
+
+            $pdo = Helper::tuckshopPDO();
+            $pdo->beginTransaction();
+
+            $query  = "INSERT INTO Users (firstName, lastName, dateOfBirth, phone, type, email, passwordHash, confirmed) VALUES (:fn, :ln, :dob, :ph, :type, :email, :pwd, :con)";
+
+            $params = [
+                "fn" => $user->firstName,
+                "ln" => $user->lastName,
+                "dob" => $user->dateOfBirth,
+                "ph" => $user->phone,
+                "type" => $user->type,
+                "email" => $user->email,
+                "pwd" => $user->passwordHash,
+                "con" => $user->confirmed
+            ];
+
+            $statement = $pdo->prepare($query);
+            $statement->execute($params);
+
+            // Only extend the user if it was inserted successfully
+            $inserted = $statement->rowCount();
+            if ($inserted > 0) {
+                $user->userID = $pdo->lastInsertId();
+                $result->userID = $user->userID;
+
+                $extendResult = false;
+
+                // Now "extend" the user - make them a student/parent/child
+                if ($user->type = User::$STUDENT) {
+                    $extendResult = User::createStudent($pdo, $user);
+                } else if ($user->type = User::$PARENT) {
+                    $extendResult = User::createParent($pdo, $user);
+                } else {
+                    $extendResult = User::createChild($pdo, $user);
+                }
+
+                // Only continue if extending the user worked
+                if ($extendResult) {
+                    // Make a verification token for the user
+                    $token = User::makeVerificationToken($pdo, $user);
+                    if ($token->success) {
+                        $result->token = $token->token;
+                        $result->success = true;
+                        // Save changes to the db
+                        $pdo->commit();
+                        return $result;
+                    }
+                }
+            }
+            // rollback if it didn't
+            $pdo->rollback();
+            return $result;
+        }
+
+        private static function tokenExists($token, $pdo = null) {
+            if ($pdo == null) {
+                $pdo = Helper::tuckshopPDO();
+            }
+            $query  = "SELECT COUNT(*) FROM Tokens WHERE token = ?";
+
+            $statement = $pdo->prepare($query);
+            $statement->execute([$token]);
+
+            return $statement->fetchColumn() > 0;
+        }
+
+        private static function makeVerificationToken($pdo, $user) {
+            $result = new stdClass();
+            $result->success = false;
+            $result->token = "";
+
+            // Make sure that the token is unique
+            do {
+                $token = Helper::makeToken();
+            } while (User::tokenExists($token, $pdo));
+
+            $result->token = $token;
+
+            $query  = "INSERT INTO Tokens (forUser, token, tokenType, used) VALUES (:uid, :token, :ttype, :used)";
+
+            $params = [
+                "uid" => $user->userID,
+                "token" => $token,
+                "ttype" => 1,
+                "used" => false
+            ];
+
+            $statement = $pdo->prepare($query);
+            $statement->execute($params);
+
+            if ($statement->rowCount() > 0) {
+                $result->success = true;
+            }
+            return $result;
+        }
+
+        private static function createStudent($pdo, $user) {
+            $query  = "INSERT INTO Students (userID, grade, studentNumber, class) VALUES (:uid, :g, :sn, :c)";
+
+            $params = [
+                "uid" => $user->userID,
+                "g" => $user->yearlevel,
+                "sn" => $user->studentNumber,
+                "c" => $user->class
+            ];
+
+            $statement = $pdo->prepare($query);
+            $statement->execute($params);
+
+            return $statement->rowCount() > 0;
+        }
+
+        private static function createParent($pdo, $user) {
+            $query  = "INSERT INTO Parents (userID, balance) VALUES (:uid, :bal)";
+
+            $params = [
+                "uid" => $user->userID,
+                "bal" => 0
+            ];
+
+            $statement = $pdo->prepare($query);
+            $statement->execute($params);
+
+            return $statement->rowCount() > 0;
+        }
+
+        private static function createChild($pdo, $user) {
+            $studentResult = User::createStudent($pdo, $user);
+            if (!$studentResult) {
+                return false;
+            }
+
+            $query  = "INSERT INTO Children (userID, parentID, allowance) VALUES (:uid, :pid, :all)";
+
+            $params = [
+                "uid" => $user->userID,
+                "pid" => $user->parentID,
+                "all" => 0
+            ];
+
+            $statement = $pdo->prepare($query);
+            $statement->execute($params);
+
+            return $statement->rowCount() > 0;
         }
 
         public function typeString() {

@@ -26,11 +26,15 @@ $hash1 = password_hash("Password", PASSWORD_DEFAULT);
 $hash2 = password_hash("Password", PASSWORD_DEFAULT);
 
 echo "$hash1<br />$hash2<br />";*/
-
+/*
 $items = Category::getItemsByCategory(3);
 
 echo json_encode($items);
 
-echo "</pre>";
+echo "</pre>";*/
+
+$token = base64_encode(openssl_random_pseudo_bytes(30));
+echo "$token<br />";
+echo strlen($token);
 
 ?>

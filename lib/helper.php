@@ -8,6 +8,11 @@
             exit();
         }
 
+        // Makes a 40 char pseudo random token (30 bytes encoded in Base64)
+        public static function makeToken() {
+            return base64_encode(openssl_random_pseudo_bytes(30));
+        }
+
         public static function isInteger($input){
             return ctype_digit(strval($input));
         }

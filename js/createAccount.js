@@ -160,7 +160,11 @@
         $("#" + getCurrentTabID() + " input").each(function(i, elem) {
             var name = $(elem).attr("name");
             var value = $(elem).val();
-            parameters[name] = value;
+            if (name && value) {
+                parameters[name] = value;
+            } else {
+                console.warn(name, value);
+            }
         });
         return parameters;
     }
@@ -172,6 +176,7 @@
                 method: "post",
                 parameters: params,
                 onSuccess: function(resp) {
+                    console.log(resp.responseText);
                     var json = resp.responseJSON;
                     if (json) {
                         if (json.okay) {
