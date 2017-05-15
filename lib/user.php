@@ -325,6 +325,17 @@
             return false;
         }
 
+        public static function isChild($parentID, $childID) {
+            $pdo = Helper::tuckshopPDO();
+            $query = "SELECT COUNT(*) FROM Children WHERE childID=? AND parentID=?";
+            $statement = $pdo->prepare($query);
+
+            $statement->execute([$childID, $parentID]);
+            $matches = $statement->fetchColumn();
+
+            return $matches;
+        }
+
     }
 
     class StudentUser extends User {

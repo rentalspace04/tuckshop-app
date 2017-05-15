@@ -41,7 +41,7 @@
         }
 
         public function isOwner($userID) {
-            return $userID == $this->madeFor || $userID == $this->madeBy;
+            return $userID == $this->madeFor || $userID == $this->madeBy || User::isChild($userID, $this->madeBy);
         }
 
         // Returns an array of itemID => quantity pairs of items in this order
