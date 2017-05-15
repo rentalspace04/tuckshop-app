@@ -92,7 +92,7 @@
             $query = "SELECT orderID FROM Orders WHERE madeFor=? OR madeBy=? OR madeBy IN (SELECT childID FROM Children WHERE parentID=?) ORDER BY orderedAt DESC";
             $statement = $pdo->prepare($query);
 
-            $statement->execute([$userID, $userID, $userID, $userID]);
+            $statement->execute([$userID, $userID, $userID]);
             $orders = $statement->fetchAll(PDO::FETCH_COLUMN);
 
             return $orders;
