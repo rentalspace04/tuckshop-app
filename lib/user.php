@@ -41,6 +41,9 @@
         public function getPasswordHash() {
             return $this->passwordHash;
         }
+        public function passwordMatches($password) {
+            return password_verify($password, $this->passwordHash);
+        }
         public function printUser() {
             echo $this->userID . "<br />";
             echo $this->typeString() . "<br />";

@@ -9,8 +9,11 @@
         public $used;
         public $timestamp;
 
+        const AUTH_EXPIRY = 28;
+
         // Types of token
         const CONFIRM_ACCOUNT = 1;
+        const APP_AUTH = 2;
 
         private static function tokenExists($token, $pdo = null) {
             if ($pdo == null) {
@@ -35,6 +38,29 @@
             $tokens = $statement->fetchAll(PDO::FETCH_CLASS, "Token");
 
             return $tokens[0];
+        }
+
+        // Makes a new APP_AUTH token for the given user, and makes sure that
+        // existing tokens are used up for them.
+        // Returns an object with a success and token field, indicating whether
+        // or not the operation worked (a token was inserted into the DB), and
+        // the actual token that was inserted
+        public static function makeNewAppAuthToken($user) {
+            $pdo = Helper::tuckshopPDO();
+            // Doesn't really matter if it worked - there may not even be
+            // old tokens to use
+            self::useOldAppTokens($pdo, $user);
+            $result = self::makeVerificationToken($pdo, $user, self::APP_AUTH);
+            return $result;
+        }
+
+        // 'Uses up' any APP_AUTH tokens for the given user
+        // Returns the number of rows affected
+        private static function useOldAppTokens($pdo, $user) {
+            $query = "UPDATE Tokens SET used = 1 WHERE forUser = ? AND tokenType = ?";
+            $statement = $pdo->prepare($query);
+            $statement->execute([$user->userID, self::APP_AUTH]);
+            return $statement->rowCount();
         }
 
         public static function makeVerificationToken($pdo, $user, $type = self::CONFIRM_ACCOUNT) {
@@ -107,6 +133,8 @@
                     // Try to verify the user - return whether or not
                     // it worked
                     return self::confirmUser($tokenObj);
+                case self::APP_AUTH:
+                    return self::checkAuthStillValid($tokenObj);
                 default:
                     return false;
             }
@@ -117,31 +145,62 @@
             if (User::idExists($tokenObj->forUser) && !User::isConfirmed($tokenObj->forUser)) {
                 $pdo = Helper::tuckshopPDO();
 
-                $worked = true; // Record whether or not changes go through
+                if (self::setTokenUsed($tokenObj)) {
+                    // Start a transaction so changes only stick after completion
+                    $pdo->beginTransaction();
+                    $query  = "UPDATE Users SET confirmed = 1 WHERE userID = ?";
+                    $statement = $pdo->prepare($query);
+                    $statement->execute([$tokenObj->forUser]);
+                    // Record whether or not changes go through
+                    $worked = ($statement->rowCount() > 0);
 
-                // Start a transaction so changes only stick after completion
-                $pdo->beginTransaction();
-                $query  = "UPDATE Tokens SET used = 1 WHERE token = ?";
-                $statement = $pdo->prepare($query);
-                $statement->execute([$tokenObj->token]);
-                // Record whether or not changes go through
-                $worked = $worked && ($statement->rowCount() > 0);
-
-                $query  = "UPDATE Users SET confirmed = 1 WHERE userID = ?";
-                $statement = $pdo->prepare($query);
-                $statement->execute([$tokenObj->forUser]);
-                // Record whether or not changes go through
-                $worked = $worked && ($statement->rowCount() > 0);
-
-                // Check if they worked
-                if ($worked) {
-                    $pdo->commit();
-                    return true;
-                } else {
-                    $pdo->rollback();
+                    // Check if they worked
+                    if ($worked) {
+                        $pdo->commit();
+                        return true;
+                    } else {
+                        $pdo->rollback();
+                    }
                 }
             }
             return false;
+        }
+
+        private static function setTokenUsed($tokenObj) {
+            // Start a transaction so changes only stick after completion
+            $pdo->beginTransaction();
+            $query  = "UPDATE Tokens SET used = 1 WHERE token = ?";
+            $statement = $pdo->prepare($query);
+            $statement->execute([$tokenObj->token]);
+
+            // Record whether or not changes go through
+            $worked = $statement->rowCount() > 0;
+            if ($worked) {
+                $pdo->commit();
+            } else {
+                $pdo->rollback();
+            }
+            return $worked;
+        }
+
+        // Checks if an app auth token is still valid. If not, it consumes
+        // it - that means that if it returns true, the token had expired
+        // and the user should not be treated as authenticated
+        private static function checkAuthStillValid($tokenObj) {
+            $pdo = Helper::tuckshopPDO();
+            // Check if it's still valid
+            $query = "SELECT COUNT(*) FROM Tokens WHERE token = ? AND NOW() < DATE_ADD(timestamp, INTERVAL ? DAY)";
+            $statement = $pdo->prepare($query);
+            $statement->execute([$tokenObj->token, self::AUTH_EXPIRY]);
+
+            $stillValid = $statement->fetchColumn();
+
+            if (!$stillValid) {
+                // Don't worry too much if it's marked as used - it's expired
+                // anyway, so people won't be able to use it
+                self::setTokenUsed($tokenObj);
+            }
+            return $stillValid;
         }
 
     }
