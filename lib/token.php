@@ -40,6 +40,20 @@
             return $tokens[0];
         }
 
+        public static function checkAppAuthToken($userID, $token) {
+            // Check that the token is valid - it exists, is for the user and
+            // isn't expired
+            if (self::tokenExists($token)) {
+                $tokenObj = self::getToken($token);
+                $expired = self::checkAuthExpired($tokenObj);
+                // Return whether or not the given token is valid -
+                // that is, if it's not expired, it's for the given user and
+                // it hasn't been used
+                return !$expired && $tokenObj->forUser == $userID
+                    && !$tokenObj->used;
+            }
+        }
+
         // Makes a new APP_AUTH token for the given user, and makes sure that
         // existing tokens are used up for them.
         // Returns an object with a success and token field, indicating whether
@@ -134,7 +148,7 @@
                     // it worked
                     return self::confirmUser($tokenObj);
                 case self::APP_AUTH:
-                    return self::checkAuthStillValid($tokenObj);
+                    return self::checkAuthExpired($tokenObj);
                 default:
                     return false;
             }
@@ -186,7 +200,7 @@
         // Checks if an app auth token is still valid. If not, it consumes
         // it - that means that if it returns true, the token had expired
         // and the user should not be treated as authenticated
-        private static function checkAuthStillValid($tokenObj) {
+        private static function checkAuthExpired($tokenObj) {
             $pdo = Helper::tuckshopPDO();
             // Check if it's still valid
             $query = "SELECT COUNT(*) FROM Tokens WHERE token = ? AND NOW() < DATE_ADD(timestamp, INTERVAL ? DAY)";
@@ -200,7 +214,9 @@
                 // anyway, so people won't be able to use it
                 self::setTokenUsed($tokenObj);
             }
-            return $stillValid;
+
+            // Invert it, so that tells whether or not it was consumed
+            return !$stillValid;
         }
 
     }
