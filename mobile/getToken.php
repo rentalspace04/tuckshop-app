@@ -27,7 +27,7 @@
                 $newToken = Token::makeNewAppAuthToken($user);
                 if ($newToken->success) {
                     $jsonObj->auth = true;
-                    $jsonObj->userId = $user->userID;
+                    $jsonObj->userID = $user->userID;
                     $jsonObj->token = $newToken->token;
                 }
             }
