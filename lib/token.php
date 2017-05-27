@@ -41,17 +41,20 @@
         }
 
         public static function checkAppAuthToken($userID, $token) {
-            // Check that the token is valid - it exists, is for the user and
-            // isn't expired
-            if (self::tokenExists($token)) {
-                $tokenObj = self::getToken($token);
-                $expired = self::checkAuthExpired($tokenObj);
-                // Return whether or not the given token is valid -
-                // that is, if it's not expired, it's for the given user and
-                // it hasn't been used
-                return !$expired && $tokenObj->forUser == $userID
-                    && !$tokenObj->used;
+            if (User::idExists($userID)) {
+                // Check that the token is valid - it exists, is for the user and
+                // isn't expired
+                if (self::tokenExists($token)) {
+                    $tokenObj = self::getToken($token);
+                    $expired = self::checkAuthExpired($tokenObj);
+                    // Return whether or not the given token is valid -
+                    // that is, if it's not expired, it's for the given user and
+                    // it hasn't been used
+                    return !$expired && $tokenObj->forUser == $userID
+                        && !$tokenObj->used;
+                }
             }
+            return false;
         }
 
         // Makes a new APP_AUTH token for the given user, and makes sure that

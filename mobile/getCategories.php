@@ -1,5 +1,6 @@
 <?php
 
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/helper.php";
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/token.php";
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/user.php";
     include_once $_SERVER['DOCUMENT_ROOT'] . "/lib/category.php";
@@ -15,17 +16,18 @@
 
     // Check that all info is given
     function checkPostData() {
-        return isset($_POST["token"]) && isset($_POST["userID"]);
+        if (isset($_POST["token"]) && isset($_POST["userID"])) {
+            return Helper::isInteger($_POST["userID"]);
+        }
+        return false;
     }
 
     if (checkPostData()) {
         $token = urldecode($_POST["token"]);
         $userID = $_POST["userID"];
-        if (User::idExists($userID)) {
-            if (Token::checkAppAuthToken($userID, $token)) {
-                $jsonObj->auth = true;
-                $jsonObj->categories = Category::getAllCategories();
-            }
+        if (Token::checkAppAuthToken($userID, $token)) {
+            $jsonObj->auth = true;
+            $jsonObj->categories = Category::getAllCategories();
         }
     }
 
